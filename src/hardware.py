@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-import RPi.GPIO as gpio
+import pigpio as gpio
+import time
 
-gpio.setmode(gpio.BOARD)
-gpio.setwarnings(False)
-
+iO = gpio.pi()
 
 def setOutputs(pins):
     '''
     Sets list of pins to outputs
     '''
     for i in pins:
-        gpio.setup(i, gpio.OUT)
+        iO.set_mode(i, gpio.OUTPUT)
 
 
 class stepperA4988(object):
@@ -35,37 +34,37 @@ class stepperA4988(object):
         if step_res == 'FULL':
             self.stepsPerRev = 200
             self.timeFactor = 1
-            gpio.output(pins[2], gpio.LOW)
-            gpio.output(pins[3], gpio.LOW)
-            gpio.output(pins[4], gpio.LOW)
+            iO.write(pins[2], 0)
+            iO.write(pins[3], 0)
+            iO.write(pins[4], 0)
         # HALF STEP RESOLUTION
         elif step_res == 'HALF':
             self.stepsPerRev = 400
             self.timeFactor = 0.5
-            gpio.output(pins[2], gpio.HIGH)
-            gpio.output(pins[3], gpio.LOW)
-            gpio.output(pins[4], gpio.LOW)
+            iO.write(pins[2], 1)
+            iO.write(pins[3], 0)
+            iO.write(pins[4], 0)
         # QUARTER STEP RESOLUTION
         elif step_res == 'QURT':
             self.stepsPerRev = 800
             self.timeFactor = 0.25
-            gpio.output(pins[2], gpio.LOW)
-            gpio.output(pins[3], gpio.HIGH)
-            gpio.output(pins[4], gpio.LOW)
+            iO.write(pins[2], 0)
+            iO.write(pins[3], 1)
+            iO.write(pins[4], 0)
         # EIGTH STEP RESOLUTION
         elif step_res == 'EGTH':
             self.stepsPerRev = 1600
             self.timeFactor = 0.125
-            gpio.output(pins[2], gpio.HIGH)
-            gpio.output(pins[3], gpio.HIGH)
-            gpio.output(pins[4], gpio.LOW)
+            iO.write(pins[2], 1)
+            iO.write(pins[3], 1)
+            iO.write(pins[4], 0)
         # SIXTEENTH STEP RESOLUTION
         elif step_res == 'SXTH':
             self.stepsPerRev = 3200
             self.timeFactor = 0.0625
-            gpio.output(pins[2], gpio.HIGH)
-            gpio.output(pins[3], gpio.HIGH)
-            gpio.output(pins[4], gpio.HIGH)
+            iO.write(pins[2], 1)
+            iO.write(pins[3], 1)
+            iO.write(pins[4], 1)
 
     def planRotation(self, goalSteps):
         '''
@@ -79,10 +78,10 @@ class stepperA4988(object):
 
         # POSITIVE MOTION CCW
         if steps > 0:
-            gpio.output(self.dirPin, gpio.HIGH)
+            iO.write(self.dirPin, 1)
         # NEGATIVE MOTION CW
         else:
-            gpio.output(self.dirPin, gpio.LOW)
+            iO.write(self.dirPin, 0)
             steps *= -1
 
         return steps
@@ -92,17 +91,17 @@ class stepperA4988(object):
         One Step. Rotation and timing will be handled by the position
         supervisor.
         '''
-        gpio.output(self.stepPin, gpio.HIGH)
-        gpio.output(self.stepPin, gpio.LOW)
+        iO.write(self.stepPin, 1)
+        iO.write(self.stepPin, 0)
 
     def manualDirection(self, direction):
         '''
         Method to manually dictate the direction of motor rotation
         '''
         if direction == 0:
-            gpio.output(self.dirPin, gpio.LOW)
+            iO.write(self.dirPin, 0)
         else:
-            gpio.output(self.dirPin, gpio.HIGH)
+            iO.write(self.dirPin, 1)
 
 
 class servo(object):
@@ -111,10 +110,19 @@ class servo(object):
     '''
 
     def __init__(self, logicPin):
-        gpio.setup(logicPin, gpio.OUT)
+        self.logicPin = logicPin
+        iO.set_servo_pulsewidth(logicPin, 500)
+        time.sleep(0.8)
+        iO.set_servo_pulsewidth(logicPin, 0)
 
-        self.posePWM = gpio.PWM(logicPin, 50)
-        self.posePWM.start(2.5)
+    def extend(self):
+        iO.set_servo_pulsewidth(self.logicPin, 2500)
+
+    def retract(self):
+        iO.set_servo_pulsewidth(self.logicPin, 500)
+    
+    def disable(self):
+        iO.set_servo_pulsewidth(self.logicPin, 0)
 
 
 class limitSwitch(object):
@@ -124,25 +132,23 @@ class limitSwitch(object):
 
     def __init__(self, logicPin):
         self.logicPin = logicPin
-        gpio.setup(self.logicPin, gpio.IN)
+        iO.set_mode(self.logicPin, gpio.INPUT)
 
     def isPressed(self):
         '''
         Checks the state of the limit switch. If high, the
         motor is at the X-Axis minor limit.
         '''
-        return gpio.input(self.logicPin)
-
+        return iO.read(self.logicPin)
 
 if __name__ == '__main__':
-    serv = servo(18)
-    while True:
-        cmd = input('Enter Pose: ')
-        if cmd == 'end':
-            break
 
-        if cmd == 'e':
-            serv.extend()
+    print('balls')
 
-        if cmd == 'r':
-            serv.retract()
+    import time
+
+    servo1 = servo(12)
+    servo1.extend()
+    time.sleep(1)
+    servo1.retract()
+    time.sleep(1)

@@ -59,6 +59,10 @@ class positionSupervisor(object):
         '''
         Positions the xAxis at a given linear pose
         '''
+
+        print('Moving to button at %d'%linearPose)
+        print('\n')
+
         goalSteps = linearToSteps(linearPose, self.xAxis.stepsPerRev)
         pathMag = self.xAxis.planRotation(goalSteps)
         stepMag = pathMag
@@ -76,12 +80,13 @@ class positionSupervisor(object):
         '''
         Action for taking the button at the current pose.
         '''
-        self.zAxis.posePWM.ChangeDutyCycle(11.5)
+        self.zAxis.extend()
         time.sleep(0.8)
-        self.zAxis.posePWM.ChangeDutyCycle(2.5)
+        self.zAxis.retract()
         time.sleep(0.8)
+        self.zAxis.disable()
 
-    def calibrate(self):
+    def calibrate(self, initPose):
         '''
         Routine for calibrating the X-Axis
         '''
@@ -90,7 +95,7 @@ class positionSupervisor(object):
             if self.origin.isPressed():
                 self.xAxis.currentStep = 0
                 time.sleep(0.25)
-                self.positionxAxis(5)
+                self.positionxAxis(initPose)
                 break
 
             self.xAxis.step()
@@ -98,4 +103,8 @@ class positionSupervisor(object):
 
 
 if __name__ == '__main__':
-    possup = positionSupervisor([11, 12, 13, 31, 32], 'FULL', 18, 16)
+    possup = positionSupervisor([17, 18, 27, 6, 12], 'HALF', 12, 23)
+    possup.zAxis.extend()
+    time.sleep(1)
+    possup.zAxis.retract()
+    time.sleep(1)
