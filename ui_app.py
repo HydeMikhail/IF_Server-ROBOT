@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+'''
+Main GUI Script
+'''
+
 #############################################################################
 #############################################################################
 ##                                                                         ##
@@ -72,12 +76,19 @@ poseSuper = positionSupervisor([17, 18, 27, 6, 12], 'HALF', 12, 23)
 
 
 def manPrime():
+    '''
+    Allows user to manually set the X-Axis Pose
+    '''
     temp = int(e1.get())
     print('Moving to %d mm' % temp)
     poseSuper.positionxAxis(temp)
 
 
 def generateRadioButtons(inProfile):
+    '''
+    Generates radio buttons for each channel in the
+    given profile
+    '''
     for key in inProfile.keys():
         but = tk.Radiobutton(radioFrame, variable=v, value=key)
         but.grid(row=1, column=key)
@@ -93,48 +104,54 @@ def generateRadioButtons(inProfile):
 #############################################################################
 
 
-root = tk.Tk(className='WPRI-IF ::: Server Controller')
-root.geometry('900x350')
-root.grid_rowconfigure(0, weight=1)
-root.grid_columnconfigure(0, weight=1)
+initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
 
-radioFrame = tk.Frame(root)
-radioFrame.grid(row=0, column=0, rowspan=2, sticky='')
+if initChoice.lower() == 'y':
+    root = tk.Tk(className='WPRI-IF ::: Server Controller')
+    root.geometry('900x350')
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
 
-ptButtonFrame = tk.Frame(root)
-ptButtonFrame.grid(row=2, column=0, rowspan=4, sticky='')
+    radioFrame = tk.Frame(root)
+    radioFrame.grid(row=0, column=0, rowspan=2, sticky='')
 
-cButtonFrame = tk.Frame(root)
-cButtonFrame.grid(row=8, column=0, rowspan=4, sticky='')
+    ptButtonFrame = tk.Frame(root)
+    ptButtonFrame.grid(row=2, column=0, rowspan=4, sticky='')
 
-eFrame = tk.Frame(root)
-eFrame.grid(row=6, column=0, columnspan=4)
+    cButtonFrame = tk.Frame(root)
+    cButtonFrame.grid(row=8, column=0, rowspan=4, sticky='')
 
-helv36 = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
+    eFrame = tk.Frame(root)
+    eFrame.grid(row=6, column=0, columnspan=4)
 
-v = tk.IntVar(value=1)
+    helv36 = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
 
-generateRadioButtons(profile)
+    v = tk.IntVar(value=1)
 
-b1 = tk.Button(ptButtonFrame, text='Prime', height=2, width=15,
-               font=helv36, borderwidth=2, relief=tk.SOLID, command=lambda: poseSuper.positionxAxis(profile[v.get()][0]))
-b1.grid(row=2, column=5, columnspan=2)
-b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
-               font=helv36, borderwidth=2, relief=tk.SOLID, command=poseSuper.takeSwitch)
-b2.grid(row=2, column=7, columnspan=2)
+    generateRadioButtons(profile)
 
-b3 = tk.Button(cButtonFrame, text='Calibrate', height=1, width=15,
-               font=helv36, borderwidth=2, relief=tk.SOLID, command=lambda: poseSuper.calibrate(profile[1][0]))
-b3.grid(row=3, column=5, columnspan=3)
+    b1 = tk.Button(ptButtonFrame, text='Prime', height=2, width=15,
+                   font=helv36, borderwidth=2, relief=tk.SOLID,
+                   command=lambda: poseSuper.positionxAxis(profile[v.get()][0]))
+    b1.grid(row=2, column=5, columnspan=2)
+    b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
+                   font=helv36, borderwidth=2, relief=tk.SOLID,
+                   command=poseSuper.takeSwitch)
+    b2.grid(row=2, column=7, columnspan=2)
 
-e1 = tk.Entry(eFrame)
-e1.grid(row=3, column=2, columnspan=2)
-but3 = tk.Button(eFrame, text='Manual Prime', height=1, width=10, borderwidth=2, relief=tk.SOLID,
-                 command=manPrime)
-but3.grid(row=3, column=5, columnspan=2)
-l1 = tk.Label(eFrame, text='X-Axis Jog')
-l1.grid(row=3, column=0)
+    b3 = tk.Button(cButtonFrame, text='Calibrate', height=1, width=15,
+                   font=helv36, borderwidth=2, relief=tk.SOLID,
+                   command=lambda: poseSuper.calibrate(profile[1][0]))
+    b3.grid(row=3, column=5, columnspan=3)
 
-poseSuper.calibrate(profile[1][0])
+    e1 = tk.Entry(eFrame)
+    e1.grid(row=3, column=2, columnspan=2)
+    but3 = tk.Button(eFrame, text='Manual Prime', height=1, width=10, borderwidth=2,
+                     relief=tk.SOLID, command=manPrime)
+    but3.grid(row=3, column=5, columnspan=2)
+    l1 = tk.Label(eFrame, text='X-Axis Jog')
+    l1.grid(row=3, column=0)
 
-root.mainloop()
+    poseSuper.calibrate(profile[1][0])
+
+    root.mainloop()
