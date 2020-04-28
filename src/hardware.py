@@ -78,10 +78,10 @@ class stepperA4988(object):
 
         # POSITIVE MOTION CCW
         if steps > 0:
-            iO.write(self.dirPin, 1)
+            iO.write(self.dirPin, 0)
         # NEGATIVE MOTION CW
         else:
-            iO.write(self.dirPin, 0)
+            iO.write(self.dirPin, 1)
             steps *= -1
 
         return steps
@@ -120,7 +120,7 @@ class servo(object):
 
     def retract(self):
         iO.set_servo_pulsewidth(self.logicPin, 500)
-    
+
     def disable(self):
         iO.set_servo_pulsewidth(self.logicPin, 0)
 
@@ -140,15 +140,3 @@ class limitSwitch(object):
         motor is at the X-Axis minor limit.
         '''
         return iO.read(self.logicPin)
-
-if __name__ == '__main__':
-
-    print('balls')
-
-    import time
-
-    servo1 = servo(12)
-    servo1.extend()
-    time.sleep(1)
-    servo1.retract()
-    time.sleep(1)

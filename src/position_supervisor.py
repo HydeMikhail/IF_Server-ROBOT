@@ -3,7 +3,7 @@
 import time
 from src.hardware import stepperA4988, servo, limitSwitch
 
-pitch = 5.0  # mm
+pulleyDiam = 12.0  # mm
 
 
 def linearToSteps(linearPose, stepsPerRev):
@@ -11,7 +11,7 @@ def linearToSteps(linearPose, stepsPerRev):
     Take a desired linear position as input and converts it
     to a step magnitude for the stepper motor
     '''
-    return int(linearPose / (pitch / stepsPerRev))  # Integer Number of Steps
+    return int(linearPose / (pulleyDiam / stepsPerRev))  # Integer Number of Steps
 
 
 def accProfile(currentStep, pathMag, minTime):
@@ -71,7 +71,7 @@ class positionSupervisor(object):
 
             self.xAxis.step()
             stepMag -= 1
-            time.sleep((accProfile(pathMag - stepMag, pathMag, 0.0005)) * self.xAxis.timeFactor)
+            time.sleep((accProfile(pathMag - stepMag, pathMag, 0.001)) * self.xAxis.timeFactor)
 
         self.xAxis.currentStep = goalSteps
 
@@ -91,7 +91,7 @@ class positionSupervisor(object):
         Routine for calibrating the X-Axis
         '''
         while True:
-            self.xAxis.manualDirection(0)
+            self.xAxis.manualDirection(1)
             if self.origin.isPressed():
                 self.xAxis.currentStep = 0
                 time.sleep(0.25)

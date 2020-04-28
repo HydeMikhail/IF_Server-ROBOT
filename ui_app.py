@@ -18,7 +18,51 @@ from tkinter import font as tkFont
 from src.position_supervisor import positionSupervisor
 from profiles.wpri_server import profile
 
-print(
+#############################################################################
+#############################################################################
+##                                                                         ##
+##                         HELPER FUNCTIONS                                ##
+##                                                                         ##
+#############################################################################
+#############################################################################
+
+poseSuper = positionSupervisor([17, 18, 27, 6, 12], 'EGTH', 12, 23)
+
+
+def manPrime():
+    '''
+    Allows user to manually set the X-Axis Pose
+    '''
+    temp = int(e1.get())
+    print('Moving to %d mm' % temp)
+    poseSuper.positionxAxis(temp)
+
+
+def generateRadioButtons(inProfile):
+    '''
+    Generates radio buttons for each channel in the
+    given profile
+    '''
+    for key in inProfile.keys():
+        but = tk.Radiobutton(radioFrame, variable=v, value=key)
+        but.grid(row=1, column=key)
+        l = tk.Label(radioFrame, text=inProfile[key][1])
+        l.grid(row=2, column=key)
+
+#############################################################################
+#############################################################################
+##                                                                         ##
+##                        TKINTER STRUCTURE                                ##
+##                                                                         ##
+#############################################################################
+#############################################################################
+
+
+initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
+
+if initChoice.lower() == 'y':
+
+    print(
     '''
 Welcome to the Index Finger Control System
 
@@ -64,49 +108,6 @@ SYSTEM IS CALIBRATING! UI WILL OPEN ONCE FINISHED!
 '''
 )
 
-#############################################################################
-#############################################################################
-##                                                                         ##
-##                         HELPER FUNCTIONS                                ##
-##                                                                         ##
-#############################################################################
-#############################################################################
-
-poseSuper = positionSupervisor([17, 18, 27, 6, 12], 'HALF', 12, 23)
-
-
-def manPrime():
-    '''
-    Allows user to manually set the X-Axis Pose
-    '''
-    temp = int(e1.get())
-    print('Moving to %d mm' % temp)
-    poseSuper.positionxAxis(temp)
-
-
-def generateRadioButtons(inProfile):
-    '''
-    Generates radio buttons for each channel in the
-    given profile
-    '''
-    for key in inProfile.keys():
-        but = tk.Radiobutton(radioFrame, variable=v, value=key)
-        but.grid(row=1, column=key)
-        l = tk.Label(radioFrame, text=inProfile[key][1])
-        l.grid(row=2, column=key)
-
-#############################################################################
-#############################################################################
-##                                                                         ##
-##                        TKINTER STRUCTURE                                ##
-##                                                                         ##
-#############################################################################
-#############################################################################
-
-
-initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
-
-if initChoice.lower() == 'y':
     root = tk.Tk(className='WPRI-IF ::: Server Controller')
     root.geometry('900x350')
     root.grid_rowconfigure(0, weight=1)
