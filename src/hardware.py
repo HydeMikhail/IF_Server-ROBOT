@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
 
-import pigpio as gpio
+'''
+WPRI-IF Robot Control Software
+Copyright (C) 2020  Mikhail Hyde
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 import time
+import pigpio as gpio
 
 iO = gpio.pi()
 
+
 def setOutputs(pins):
     '''
-    Sets list of pins to outputs
+    Takes list of GPIO pins (BCM) and sets them
+    each as an output.
     '''
     for i in pins:
         iO.set_mode(i, gpio.OUTPUT)
@@ -34,37 +54,37 @@ class stepperA4988(object):
         if step_res == 'FULL':
             self.stepsPerRev = 200
             self.timeFactor = 1
-            iO.write(pins[2], 0)
-            iO.write(pins[3], 0)
             iO.write(pins[4], 0)
+            iO.write(pins[3], 0)
+            iO.write(pins[2], 0)
         # HALF STEP RESOLUTION
         elif step_res == 'HALF':
             self.stepsPerRev = 400
             self.timeFactor = 0.5
-            iO.write(pins[2], 1)
+            iO.write(pins[4], 1)
             iO.write(pins[3], 0)
-            iO.write(pins[4], 0)
+            iO.write(pins[2], 0)
         # QUARTER STEP RESOLUTION
         elif step_res == 'QURT':
             self.stepsPerRev = 800
             self.timeFactor = 0.25
-            iO.write(pins[2], 0)
-            iO.write(pins[3], 1)
             iO.write(pins[4], 0)
+            iO.write(pins[3], 1)
+            iO.write(pins[2], 0)
         # EIGTH STEP RESOLUTION
         elif step_res == 'EGTH':
             self.stepsPerRev = 1600
             self.timeFactor = 0.125
-            iO.write(pins[2], 1)
+            iO.write(pins[4], 1)
             iO.write(pins[3], 1)
-            iO.write(pins[4], 0)
+            iO.write(pins[2], 0)
         # SIXTEENTH STEP RESOLUTION
         elif step_res == 'SXTH':
             self.stepsPerRev = 3200
             self.timeFactor = 0.0625
-            iO.write(pins[2], 1)
-            iO.write(pins[3], 1)
             iO.write(pins[4], 1)
+            iO.write(pins[3], 1)
+            iO.write(pins[2], 1)
 
     def planRotation(self, goalSteps):
         '''
@@ -116,12 +136,24 @@ class servo(object):
         iO.set_servo_pulsewidth(logicPin, 0)
 
     def extend(self):
-        iO.set_servo_pulsewidth(self.logicPin, 2500)
+        '''
+        Rotates the servo to extend the activation
+        mechanism
+        '''
+        iO.set_servo_pulsewidth(self.logicPin, 1500)
 
     def retract(self):
-        iO.set_servo_pulsewidth(self.logicPin, 500)
+        '''
+        Rotates the servo to retract the activation
+        mechanism (ABSOLUTE 0 POSITION)
+        '''
+        iO.set_servo_pulsewidth(self.logicPin, 2500)
 
     def disable(self):
+        '''
+        Disables servo to avoid chattering while
+        inactive.
+        '''
         iO.set_servo_pulsewidth(self.logicPin, 0)
 
 

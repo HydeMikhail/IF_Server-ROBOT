@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
 
-import time
-from src.hardware import stepperA4988, servo, limitSwitch
+'''
+WPRI-IF Robot Control Software
+Copyright (C) 2020  Mikhail Hyde
 
-pulleyDiam = 12.0  # mm
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
+import time
+from src.constants import pulleyDiam, maxTime
+from src.hardware import stepperA4988, servo, limitSwitch
 
 
 def linearToSteps(linearPose, stepsPerRev):
@@ -21,7 +38,6 @@ def accProfile(currentStep, pathMag, minTime):
     '''
 
     # Slowest time interval
-    maxTime = 0.003
     disTime = maxTime
 
     # When Stepper is in first revolution
@@ -60,7 +76,7 @@ class positionSupervisor(object):
         Positions the xAxis at a given linear pose
         '''
 
-        print('Moving to button at %d'%linearPose)
+        print('Moving to button at %d' % linearPose)
         print('\n')
 
         goalSteps = linearToSteps(linearPose, self.xAxis.stepsPerRev)
@@ -71,10 +87,10 @@ class positionSupervisor(object):
 
             self.xAxis.step()
             stepMag -= 1
-            time.sleep((accProfile(pathMag - stepMag, pathMag, 0.001)) * self.xAxis.timeFactor)
+            time.sleep((accProfile(pathMag - stepMag, pathMag, 0.001))
+                       * self.xAxis.timeFactor)
 
         self.xAxis.currentStep = goalSteps
-
 
     def takeSwitch(self):
         '''

@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 
 '''
-Main GUI Script
-'''
+WPRI-IF Robot Control Software
+Copyright (C) 2020  Mikhail Hyde
 
-#############################################################################
-#############################################################################
-##                                                                         ##
-##                           IMPORTS                                       ##
-##                                                                         ##
-#############################################################################
-#############################################################################
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
 
 import tkinter as tk
 from tkinter import font as tkFont
@@ -18,15 +24,7 @@ from tkinter import font as tkFont
 from src.position_supervisor import positionSupervisor
 from profiles.wpri_server import profile
 
-#############################################################################
-#############################################################################
-##                                                                         ##
-##                         HELPER FUNCTIONS                                ##
-##                                                                         ##
-#############################################################################
-#############################################################################
-
-poseSuper = positionSupervisor([17, 18, 27, 6, 12], 'EGTH', 12, 23)
+poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 22, 4)
 
 
 def manPrime():
@@ -49,21 +47,13 @@ def generateRadioButtons(inProfile):
         l = tk.Label(radioFrame, text=inProfile[key][1])
         l.grid(row=2, column=key)
 
-#############################################################################
-#############################################################################
-##                                                                         ##
-##                        TKINTER STRUCTURE                                ##
-##                                                                         ##
-#############################################################################
-#############################################################################
-
 
 initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
 
 if initChoice.lower() == 'y':
 
     print(
-    '''
+        '''
 Welcome to the Index Finger Control System
 
 This system is designed to remotely activate the channels
@@ -106,7 +96,7 @@ from the last line of ~/.bashrc.
 
 SYSTEM IS CALIBRATING! UI WILL OPEN ONCE FINISHED!
 '''
-)
+    )
 
     root = tk.Tk(className='WPRI-IF ::: Server Controller')
     root.geometry('900x350')
