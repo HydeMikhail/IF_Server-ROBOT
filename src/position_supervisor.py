@@ -19,8 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 import time
-from src.constants import pulleyDiam, maxTime
-from src.hardware import stepperA4988, servo, limitSwitch
+from constants import pulleyDiam, maxTime
+from hardware import stepperA4988, servo, limitSwitch
 
 
 def linearToSteps(linearPose, stepsPerRev):
@@ -97,9 +97,9 @@ class positionSupervisor(object):
         Action for taking the button at the current pose.
         '''
         self.zAxis.extend()
-        time.sleep(0.8)
+        time.sleep(1)
         self.zAxis.retract()
-        time.sleep(0.8)
+        time.sleep(1)
         self.zAxis.disable()
 
     def calibrate(self, initPose):
@@ -119,8 +119,5 @@ class positionSupervisor(object):
 
 
 if __name__ == '__main__':
-    possup = positionSupervisor([17, 18, 27, 6, 12], 'HALF', 12, 23)
-    possup.zAxis.extend()
-    time.sleep(1)
-    possup.zAxis.retract()
-    time.sleep(1)
+    possup = positionSupervisor([5, 6, 13, 15, 26], 'HALF', 4, 17)
+    possup.takeSwitch()

@@ -140,14 +140,14 @@ class servo(object):
         Rotates the servo to extend the activation
         mechanism
         '''
-        iO.set_servo_pulsewidth(self.logicPin, 1500)
+        iO.set_servo_pulsewidth(self.logicPin, 955)
 
     def retract(self):
         '''
         Rotates the servo to retract the activation
         mechanism (ABSOLUTE 0 POSITION)
         '''
-        iO.set_servo_pulsewidth(self.logicPin, 2500)
+        iO.set_servo_pulsewidth(self.logicPin, 500)
 
     def disable(self):
         '''
