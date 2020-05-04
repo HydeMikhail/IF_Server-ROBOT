@@ -108,9 +108,9 @@ class positionSupervisor(object):
         Action for taking the button at the current pose.
         '''
         self.zAxis.extend()
-        time.sleep(0.75)
+        time.sleep(0.6)
         self.zAxis.retract()
-        time.sleep(0.75)
+        time.sleep(0.6)
         self.zAxis.disable()
 
     def calibrate(self, initPose):
@@ -129,6 +129,18 @@ class positionSupervisor(object):
         print('Going Home')
         self._moveUntil()
         self.positionxAxis(5)
+
+    def updateRes(self, stepperPins, update, servoPin, limitPin):
+        '''
+        Allows user to update the step resolution, dynamically
+
+        Remembers current step and steps per rev before change
+        for appropriate adjustment.
+        '''
+        tempStep = self.xAxis.currentStep
+        tempRotDiv = self.xAxis.stepsPerRev
+        self.__init__(stepperPins, update, servoPin, limitPin)
+        self.xAxis.currentStep = tempStep * (self.xAxis.stepsPerRev / tempRotDiv)
 
 if __name__ == '__main__':
     possup = positionSupervisor([5, 6, 13, 15, 26], 'HALF', 4, 17)
