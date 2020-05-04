@@ -18,5 +18,5 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-pulleyDiam = 12.0  # mm
+pulleyDiam = 6.0  # mm
 maxTime = 0.003  # s

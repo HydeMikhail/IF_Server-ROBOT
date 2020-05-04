@@ -108,9 +108,9 @@ class positionSupervisor(object):
         Action for taking the button at the current pose.
         '''
         self.zAxis.extend()
-        time.sleep(1)
+        time.sleep(0.75)
         self.zAxis.retract()
-        time.sleep(1)
+        time.sleep(0.75)
         self.zAxis.disable()
 
     def calibrate(self, initPose):

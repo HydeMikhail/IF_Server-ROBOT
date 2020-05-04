@@ -36,9 +36,9 @@ def generateRadioButtons(inProfile, frame, var):
     '''
     for key in inProfile.keys():
         but = tk.Radiobutton(frame, variable=var, value=key, borderwidth=1, relief=tk.SOLID)
-        but.grid(row=1, column=key, ipadx=3, ipady=3)
+        but.grid(row=1, column=key, ipadx=2, ipady=2)
         l = tk.Label(frame, text=inProfile[key][1], borderwidth=1, relief=tk.SOLID)
-        l.grid(row=2, column=key, ipadx=3, ipady=3)
+        l.grid(row=2, column=key, ipadx=2, ipady=2)
 
 def startupMsg():
     '''

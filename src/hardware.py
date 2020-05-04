@@ -132,7 +132,7 @@ class servo(object):
     def __init__(self, logicPin):
         self.logicPin = logicPin
         iO.set_servo_pulsewidth(logicPin, 500)
-        time.sleep(0.8)
+        time.sleep(1)
         iO.set_servo_pulsewidth(logicPin, 0)
 
     def extend(self):
@@ -140,7 +140,7 @@ class servo(object):
         Rotates the servo to extend the activation
         mechanism
         '''
-        iO.set_servo_pulsewidth(self.logicPin, 955)
+        iO.set_servo_pulsewidth(self.logicPin, 935)
 
     def retract(self):
         '''
