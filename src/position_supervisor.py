@@ -19,8 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 import time
-from constants import pulleyDiam, maxTime
-from hardware import stepperA4988, servo, limitSwitch
+from src.constants import pulleyDiam, maxTime
+from src.hardware import stepperA4988, servo, limitSwitch
 
 
 def linearToSteps(linearPose, stepsPerRev):
@@ -71,6 +71,17 @@ class positionSupervisor(object):
         self.zAxis = servo(servoPin)
         self.origin = limitSwitch(limitPin)
 
+    def _moveUntil(self):
+        while True:
+            self.xAxis.manualDirection(1)
+            if self.origin.isPressed():
+                self.xAxis.currentStep = 0
+                time.sleep(0.25)
+                break
+
+            self.xAxis.step()
+            time.sleep(0.0005)
+
     def positionxAxis(self, linearPose):
         '''
         Positions the xAxis at a given linear pose
@@ -104,19 +115,20 @@ class positionSupervisor(object):
 
     def calibrate(self, initPose):
         '''
-        Routine for calibrating the X-Axis
+        Routine for calibrating the X-Axis. Returns
+        to origin then positions at button 1
         '''
-        while True:
-            self.xAxis.manualDirection(1)
-            if self.origin.isPressed():
-                self.xAxis.currentStep = 0
-                time.sleep(0.25)
-                self.positionxAxis(initPose)
-                break
+        print('Calibrating')
+        self._moveUntil()
+        self.positionxAxis(initPose)
 
-            self.xAxis.step()
-            time.sleep(0.001)
-
+    def home(self):
+        '''
+        Routine for returning Carrier to home position
+        '''
+        print('Going Home')
+        self._moveUntil()
+        self.positionxAxis(5)
 
 if __name__ == '__main__':
     possup = positionSupervisor([5, 6, 13, 15, 26], 'HALF', 4, 17)

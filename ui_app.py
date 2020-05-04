@@ -25,7 +25,7 @@ from src.position_supervisor import positionSupervisor
 from src.gui_util import generateRadioButtons, manPrime, startupMsg
 from profiles.wpri_server import profile
 
-poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 22, 4)
+poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 4, 17)
 
 initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
 
@@ -41,16 +41,16 @@ if initChoice.lower() == 'y':
 
     # Define frames
     radioFrame = tk.Frame(root)
-    radioFrame.grid(row=0, column=0, rowspan=2, sticky='')
+    radioFrame.grid(row=0, column=0, rowspan=2, columnspan=len(profile.keys()), sticky='')
 
     ptButtonFrame = tk.Frame(root)
-    ptButtonFrame.grid(row=2, column=0, rowspan=4, sticky='')
+    ptButtonFrame.grid(row=2, column=0, rowspan=4, sticky='W')
 
     cButtonFrame = tk.Frame(root)
-    cButtonFrame.grid(row=8, column=0, rowspan=4, sticky='')
+    cButtonFrame.grid(row=2, column=0, rowspan=4, sticky='E')
 
     eFrame = tk.Frame(root)
-    eFrame.grid(row=6, column=0, columnspan=4)
+    eFrame.grid(row=2, column=0, columnspan=4)
 
     # Defining font
     helv36 = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
@@ -59,27 +59,31 @@ if initChoice.lower() == 'y':
     v = tk.IntVar(value=1)
 
     # Generate Control Buttons
-    generateRadioButtons(radioFrame, profile, v)
+    generateRadioButtons(profile, radioFrame, v)
 
-    b1 = tk.Button(ptButtonFrame, text='Prime', height=2, width=15,
+    b1 = tk.Button(ptButtonFrame, text='Position', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=lambda: poseSuper.positionxAxis(profile[v.get()][0]))
-    b1.grid(row=2, column=5, columnspan=2)
+    b1.grid(row=2, column=1, columnspan=2)
     b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=poseSuper.takeSwitch)
-    b2.grid(row=2, column=7, columnspan=2)
+    b2.grid(row=4, column=1, columnspan=2)
 
-    b3 = tk.Button(cButtonFrame, text='Calibrate', height=1, width=15,
+    b3 = tk.Button(cButtonFrame, text='Calibrate', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=lambda: poseSuper.calibrate(profile[1][0]))
-    b3.grid(row=3, column=5, columnspan=3)
+    b3.grid(row=2, column=1, columnspan=3)
+    b4 = tk.Button(cButtonFrame, text='Home', height=2, width=15,
+                   font=helv36, borderwidth=2, relief=tk.SOLID,
+                   command=poseSuper.home)
+    b4.grid(row=4, column=1, columnspan=3)
 
     # Generate Manual Priming Controls
     e1 = tk.Entry(eFrame)
     e1.grid(row=3, column=2, columnspan=2)
     but3 = tk.Button(eFrame, text='Manual Prime', height=1, width=10, borderwidth=2,
-                     relief=tk.SOLID, command=manPrime)
+                     relief=tk.SOLID, command=lambda: manPrime(e1, poseSuper))
     but3.grid(row=3, column=5, columnspan=2)
     l1 = tk.Label(eFrame, text='X-Axis Jog')
     l1.grid(row=3, column=0)

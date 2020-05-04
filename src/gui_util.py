@@ -24,7 +24,7 @@ def manPrime(entry, poseSuper):
     '''
     Allows user to manually set the X-Axis Pose
     '''
-    temp = int(entry.get())
+    temp = float(entry.get())
     print('Moving to %d mm' % temp)
     poseSuper.positionxAxis(temp)
 
@@ -35,10 +35,10 @@ def generateRadioButtons(inProfile, frame, var):
     given profile
     '''
     for key in inProfile.keys():
-        but = tk.Radiobutton(frame, variable=var, value=key)
-        but.grid(row=1, column=key)
-        l = tk.Label(frame, text=inProfile[key][1])
-        l.grid(row=2, column=key)
+        but = tk.Radiobutton(frame, variable=var, value=key, borderwidth=1, relief=tk.SOLID)
+        but.grid(row=1, column=key, ipadx=3, ipady=3)
+        l = tk.Label(frame, text=inProfile[key][1], borderwidth=1, relief=tk.SOLID)
+        l.grid(row=2, column=key, ipadx=3, ipady=3)
 
 def startupMsg():
     '''
