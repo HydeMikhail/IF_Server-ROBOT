@@ -23,7 +23,7 @@ from src.constants import pulleyDiam, maxTime
 from src.hardware import stepperA4988, servo, limitSwitch
 
 
-def linearToSteps(linearPose, stepsPerRev):
+def linear_to_steps(linearPose, stepsPerRev):
     '''
     Take a desired linear position as input and converts it
     to a step magnitude for the stepper motor
@@ -31,7 +31,7 @@ def linearToSteps(linearPose, stepsPerRev):
     return int(linearPose / (pulleyDiam / stepsPerRev))  # Integer Number of Steps
 
 
-def accProfile(currentStep, pathMag, minTime):
+def acc_profile(currentStep, pathMag, minTime):
     '''
     Calulates discrete time intervals to genearate
     acceleration and deceleration in X-Axis motion.
@@ -67,52 +67,52 @@ class positionSupervisor(object):
     '''
 
     def __init__(self, stepperPins, resolution, servoPin, limitPin):
-        self.xAxis = stepperA4988(stepperPins, resolution)
-        self.zAxis = servo(servoPin)
+        self.x_axis = stepperA4988(stepperPins, resolution)
+        self.z_axis = servo(servoPin)
         self.origin = limitSwitch(limitPin)
 
-    def _moveUntil(self):
+    def _move_until(self):
         while True:
-            self.xAxis.manualDirection(1)
-            if self.origin.isPressed():
-                self.xAxis.currentStep = 0
+            self.x_axis.manual_direction(1)
+            if self.origin.is_pressed():
+                self.x_axis.currentStep = 0
                 time.sleep(0.25)
                 break
 
-            self.xAxis.step()
+            self.x_axis.step()
             time.sleep(0.0005)
 
-    def positionxAxis(self, linearPose):
+    def positionx_axis(self, linearPose):
         '''
-        Positions the xAxis at a given linear pose
+        Positions the x_axis at a given linear pose
         '''
 
         print('Moving to button at %d' % linearPose)
         print('\n')
 
-        goalSteps = linearToSteps(linearPose, self.xAxis.stepsPerRev)
-        pathMag = self.xAxis.planRotation(goalSteps)
+        goalSteps = linear_to_steps(linearPose, self.x_axis.steps_per_rev)
+        pathMag = self.x_axis.plan_rotation(goalSteps)
         stepMag = pathMag
 
         while stepMag > 0:
 
-            self.xAxis.step()
+            self.x_axis.step()
             stepMag -= 1
-            time.sleep((accProfile(pathMag - stepMag, pathMag, 0.001))
-                       * self.xAxis.timeFactor)
+            time.sleep((acc_profile(pathMag - stepMag, pathMag, 0.001))
+                       * self.x_axis.time_factor)
 
-        self.xAxis.currentStep = goalSteps
+        self.x_axis.currentStep = goalSteps
 
-    def takeSwitch(self):
+    def take_swtich(self):
         '''
         Action for taking the button at the current pose.
         '''
         print('Activating Channel \n')
-        self.zAxis.extend()
+        self.z_axis.extend()
         time.sleep(0.6)
-        self.zAxis.retract()
+        self.z_axis.retract()
         time.sleep(0.6)
-        self.zAxis.disable()
+        self.z_axis.disable()
 
     def calibrate(self, initPose):
         '''
@@ -120,30 +120,30 @@ class positionSupervisor(object):
         to origin then positions at button 1
         '''
         print('Calibrating\n')
-        self._moveUntil()
-        self.positionxAxis(initPose)
+        self._move_until()
+        self.positionx_axis(initPose)
 
     def home(self):
         '''
         Routine for returning Carrier to home position
         '''
         print('Homing\n')
-        self._moveUntil()
-        self.positionxAxis(5)
+        self._move_until()
+        self.positionx_axis(5)
 
-    def updateRes(self, stepperPins, update, servoPin, limitPin):
+    def update_res(self, stepperPins, update, servoPin, limitPin):
         '''
         Allows user to update the step resolution, dynamically
 
         Remembers current step and steps per rev before change
         for appropriate adjustment.
         '''
-        tempStep = self.xAxis.currentStep
-        tempRotDiv = self.xAxis.stepsPerRev
+        tempStep = self.x_axis.currentStep
+        tempRotDiv = self.x_axis.steps_per_rev
         self.__init__(stepperPins, update, servoPin, limitPin)
-        self.xAxis.currentStep = tempStep * (self.xAxis.stepsPerRev / tempRotDiv)
+        self.x_axis.currentStep = tempStep * (self.x_axis.steps_per_rev / tempRotDiv)
         print('Updated Resolution to %s'%update)
 
 if __name__ == '__main__':
     possup = positionSupervisor([5, 6, 13, 15, 26], 'HALF', 4, 17)
-    possup.takeSwitch()
+    possup.take_swtich()

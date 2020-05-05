@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import tkinter as tk
 
 
-def manPrime(entry, poseSuper):
+def man_prime(entry, poseSuper):
     '''
     Allows user to manually set the X-Axis Pose
     '''
@@ -30,7 +30,7 @@ def manPrime(entry, poseSuper):
     poseSuper.positionxAxis(temp)
 
 
-def generateRadioButtons(poseSuper, inProfile, frame, var):
+def gen_radio_buttons(poseSuper, inProfile, frame, var):
     '''
     Generates radio buttons for each channel in the
     given profile
@@ -43,7 +43,7 @@ def generateRadioButtons(poseSuper, inProfile, frame, var):
         but.grid(row=0, column=key)
 
 
-def startupMsg():
+def startup_msg():
     '''
     Displays important information in terminal
     during program startup.
