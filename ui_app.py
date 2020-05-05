@@ -25,11 +25,11 @@ from src.position_supervisor import positionSupervisor
 from src.gui_util import gen_radio_buttons, man_prime, startup_msg
 from profiles.wpri_server import profile
 
-poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 4, 17)
+_poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 4, 17)
 
-initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
+_initChoice = input('Would you like to start the IF_Controller UI? [Y/n]   ')
 
-if initChoice.lower() == 'y':
+if _initChoice.lower() == 'y':
 
     startup_msg()
 
@@ -63,20 +63,20 @@ if initChoice.lower() == 'y':
     c.set('EGTH')
 
     # Generate Control Buttons
-    gen_radio_buttons(poseSuper, profile, radioFrame, v)
+    gen_radio_buttons(_poseSuper, profile, radioFrame, v)
 
     b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=poseSuper.take_swtich)
+                   command=_poseSuper.take_swtich)
     b2.grid(row=4, column=1, columnspan=2, ipadx=2, ipady=2)
 
     b3 = tk.Button(cButtonFrame, text='Calibrate', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=lambda: poseSuper.calibrate(profile[1][0]))
+                   command=lambda: _poseSuper.calibrate(profile[1][0]))
     b3.grid(row=2, column=1, columnspan=3, ipadx=2, ipady=2)
     b4 = tk.Button(cButtonFrame, text='Home', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=poseSuper.home)
+                   command=_poseSuper.home)
     b4.grid(row=4, column=1, columnspan=3, ipadx=2, ipady=2)
 
     # Generate Manual Priming Controls
@@ -84,7 +84,7 @@ if initChoice.lower() == 'y':
     e1.grid(row=3, column=2, columnspan=2, ipadx=2, ipady=2)
     but3 = tk.Button(eFrame, text='Manual Position', height=1, width=12,
                      borderwidth=2, relief=tk.SOLID,
-                     command=lambda: man_prime(e1, poseSuper))
+                     command=lambda: man_prime(e1, _poseSuper))
     but3.grid(row=3, column=5, columnspan=2, ipadx=2, ipady=2)
     l1 = tk.Label(eFrame, text='X-Axis Jog')
     l1.grid(row=3, column=0, ipadx=2, ipady=2)
@@ -95,11 +95,11 @@ if initChoice.lower() == 'y':
     l2.grid(row=7, column=0, ipadx=2, ipady=2)
     but4 = tk.Button(eFrame, text='Change Res', height=1, width=12,
                      borderwidth=2, relief=tk.SOLID,
-                     command=lambda: poseSuper.update_res([5, 6, 13, 19, 26], c.get(), 4, 17))
+                     command=lambda: _poseSuper.update_res([5, 6, 13, 19, 26], c.get(), 4, 17))
     but4.grid(row=7, column=5, columnspan=2, ipadx=2, ipady=2)
 
     # Calibrate
-    poseSuper.calibrate(profile[1][0])
+    _poseSuper.calibrate(profile[1][0])
 
     # Start UI
     root.mainloop()
