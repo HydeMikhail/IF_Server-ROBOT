@@ -23,7 +23,7 @@ from src.constants import pulleyDiam, maxTime
 from src.hardware import stepperA4988, servo, limitSwitch
 
 
-def linear_to_steps(linearPose, stepsPerRev):
+def _linear_to_steps(linearPose, stepsPerRev):
     '''
     Take a desired linear position as input and converts it
     to a step magnitude for the stepper motor
@@ -31,7 +31,7 @@ def linear_to_steps(linearPose, stepsPerRev):
     return int(linearPose / (pulleyDiam / stepsPerRev))  # Integer Number of Steps
 
 
-def acc_profile(currentStep, pathMag, minTime):
+def _acc_profile(currentStep, pathMag, minTime):
     '''
     Calulates discrete time intervals to genearate
     acceleration and deceleration in X-Axis motion.
@@ -90,7 +90,7 @@ class positionSupervisor(object):
         print('Moving to button at %d' % linearPose)
         print('\n')
 
-        goalSteps = linear_to_steps(linearPose, self.x_axis.steps_per_rev)
+        goalSteps = _linear_to_steps(linearPose, self.x_axis.steps_per_rev)
         pathMag = self.x_axis.plan_rotation(goalSteps)
         stepMag = pathMag
 
@@ -98,7 +98,7 @@ class positionSupervisor(object):
 
             self.x_axis.step()
             stepMag -= 1
-            time.sleep((acc_profile(pathMag - stepMag, pathMag, 0.001))
+            time.sleep((_acc_profile(pathMag - stepMag, pathMag, 0.001))
                        * self.x_axis.time_factor)
 
         self.x_axis.currentStep = goalSteps

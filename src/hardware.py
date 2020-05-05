@@ -24,7 +24,7 @@ import pigpio as gpio
 iO = gpio.pi()
 
 
-def set_outputs(pins):
+def _set_outputs(pins):
     '''
     Takes list of GPIO pins (BCM) and sets them
     each as an output.
@@ -41,7 +41,7 @@ class stepperA4988(object):
 
     def __init__(self, pins, step_res):
 
-        set_outputs(pins)
+        _set_outputs(pins)
 
         # Stepper Direction Pin
         self.dir_pin = pins[0]
