@@ -30,7 +30,7 @@ def manPrime(entry, poseSuper):
     poseSuper.positionxAxis(temp)
 
 
-def generateRadioButtons(inProfile, frame, var):
+def generateRadioButtons(poseSuper, inProfile, frame, var):
     '''
     Generates radio buttons for each channel in the
     given profile
@@ -38,7 +38,8 @@ def generateRadioButtons(inProfile, frame, var):
     for key in inProfile.keys():
         but = tk.Radiobutton(frame, text=inProfile[key][1],
                              variable=var, value=key, borderwidth=1,
-                             width=8, relief=tk.SOLID)
+                             width=8, relief=tk.SOLID,
+                             command=lambda: poseSuper.positionxAxis(inProfile[var][0]))
         but.grid(row=0, column=key)
 
 

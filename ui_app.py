@@ -63,12 +63,8 @@ if initChoice.lower() == 'y':
     c.set('EGTH')
 
     # Generate Control Buttons
-    generateRadioButtons(profile, radioFrame, v)
+    generateRadioButtons(poseSuper, profile, radioFrame, v)
 
-    b1 = tk.Button(ptButtonFrame, text='Position', height=2, width=15,
-                   font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=lambda: poseSuper.positionxAxis(profile[v.get()][0]))
-    b1.grid(row=2, column=1, columnspan=2, ipadx=2, ipady=2)
     b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=poseSuper.takeSwitch)

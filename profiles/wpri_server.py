@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+#          ID | POSE | NAME
+
 profile = {1: [14.25, 'DNA'],
            2: [26.5, 'HUB PRI'],
            3: [32, 'HUB BKUP'],

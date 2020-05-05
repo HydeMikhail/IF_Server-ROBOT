@@ -107,6 +107,7 @@ class positionSupervisor(object):
         '''
         Action for taking the button at the current pose.
         '''
+        print('Activating Channel \n')
         self.zAxis.extend()
         time.sleep(0.6)
         self.zAxis.retract()
@@ -118,7 +119,7 @@ class positionSupervisor(object):
         Routine for calibrating the X-Axis. Returns
         to origin then positions at button 1
         '''
-        print('Calibrating')
+        print('Calibrating\n')
         self._moveUntil()
         self.positionxAxis(initPose)
 
@@ -126,7 +127,7 @@ class positionSupervisor(object):
         '''
         Routine for returning Carrier to home position
         '''
-        print('Going Home')
+        print('Homing\n')
         self._moveUntil()
         self.positionxAxis(5)
 
@@ -141,6 +142,7 @@ class positionSupervisor(object):
         tempRotDiv = self.xAxis.stepsPerRev
         self.__init__(stepperPins, update, servoPin, limitPin)
         self.xAxis.currentStep = tempStep * (self.xAxis.stepsPerRev / tempRotDiv)
+        print('Updated Resolution to %s'%update)
 
 if __name__ == '__main__':
     possup = positionSupervisor([5, 6, 13, 15, 26], 'HALF', 4, 17)
