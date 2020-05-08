@@ -27,7 +27,7 @@ def man_prime(entry, poseSuper):
     '''
     temp = float(entry.get())
     print('Moving to %d mm' % temp)
-    poseSuper.positionxAxis(temp)
+    poseSuper.positionx_axis(temp)
 
 
 def gen_radio_buttons(poseSuper, inProfile, frame, var):
@@ -39,7 +39,7 @@ def gen_radio_buttons(poseSuper, inProfile, frame, var):
         but = tk.Radiobutton(frame, text=inProfile[key][1],
                              variable=var, value=key, borderwidth=1,
                              width=8, relief=tk.SOLID,
-                             command=lambda: poseSuper.positionxAxis(inProfile[var][0]))
+                             command=lambda: poseSuper.positionx_axis(inProfile[var][0]))
         but.grid(row=0, column=key)
 
 
