@@ -39,7 +39,7 @@ def gen_radio_buttons(poseSuper, inProfile, frame, var):
         but = tk.Radiobutton(frame, text=inProfile[key][1],
                              variable=var, value=key, borderwidth=1,
                              width=8, relief=tk.SOLID,
-                             command=lambda: poseSuper.positionx_axis(inProfile[var][0]))
+                             command=lambda: poseSuper.positionx_axis(inProfile[var.get()][0]))
         but.grid(row=0, column=key)
 
 
