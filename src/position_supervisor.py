@@ -87,16 +87,13 @@ class positionSupervisor(object):
         Positions the x_axis at a given linear pose
         '''
 
-        print('Current Step: ', self.x_axis.currentStep)
-
         print('Moving to button at %d' % linearPose)
         print('\n')
 
         goalSteps = _linear_to_steps(linearPose, self.x_axis.steps_per_rev)
-        print('Goal Steps: ', goalSteps)
         pathMag = self.x_axis.plan_rotation(goalSteps)
         stepMag = pathMag
-        print('Path Mag: ', stepMag)
+
         while stepMag > 0:
 
             self.x_axis.step()
@@ -105,8 +102,6 @@ class positionSupervisor(object):
                        * self.x_axis.time_factor)
 
         self.x_axis.currentStep = goalSteps
-              
-        print('Current Step: ', self.x_axis.currentStep)
         
     def take_swtich(self):
         '''
