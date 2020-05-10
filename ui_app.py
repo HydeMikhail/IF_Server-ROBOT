@@ -35,14 +35,14 @@ if _initChoice.lower() == 'y':
 
     # Main Window Config
     root = tk.Tk(className='WPRI-IF ::: Server Controller')
-    root.geometry('1650x350')
+    root.geometry('950x350')
     root.grid_rowconfigure(0, weight=1, uniform='tom')
     root.grid_columnconfigure(0, weight=1, uniform='fred')
 
     # Define frames
     radioFrame = tk.Frame(root)
-    radioFrame.grid(row=0, column=0, rowspan=2,
-                    columnspan=len(profile.keys()), sticky='')
+    radioFrame.grid(row=0, column=0,
+                    columnspan=8, sticky='')
 
     ptButtonFrame = tk.Frame(root)
     ptButtonFrame.grid(row=2, column=0, rowspan=4, sticky='W')

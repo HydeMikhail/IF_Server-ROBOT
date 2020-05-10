@@ -35,13 +35,18 @@ def gen_radio_buttons(poseSuper, inProfile, frame, var):
     Generates radio buttons for each channel in the
     given profile
     '''
+    indexRow = 0
+    indexCol = 0
     for key in inProfile.keys():
         but = tk.Radiobutton(frame, text=inProfile[key][1],
                              variable=var, value=key, borderwidth=1,
                              width=8, relief=tk.SOLID,
                              command=lambda: poseSuper.positionx_axis(inProfile[var.get()][0]))
-        but.grid(row=0, column=key)
-
+        but.grid(row=indexRow, column=indexCol)
+        indexCol +=1
+        if key // 8 == indexRow+1:
+            indexRow += 1
+            indexCol = 0
 
 def startup_msg():
     '''
