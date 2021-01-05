@@ -22,7 +22,7 @@ import tkinter as tk
 from tkinter import font as tkFont
 
 from src.position_supervisor import positionSupervisor
-from src.gui_util import gen_radio_buttons, man_prime, startup_msg
+from src.gui_util import gen_buttons, man_prime, startup_msg
 from profiles.wpri_server import profile
 
 _poseSuper = positionSupervisor([5, 6, 13, 19, 26], 'EGTH', 4, 17)
@@ -57,13 +57,12 @@ if _initChoice.lower() == 'y':
     helv36 = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
 
     # Tkinter Variables
-    v = tk.IntVar(value=1)
     c = tk.StringVar(root)
     choices = ['QURT', 'EGTH', 'SXTH']
     c.set('EGTH')
 
     # Generate Control Buttons
-    gen_radio_buttons(_poseSuper, profile, radioFrame, v)
+    gen_buttons(_poseSuper, profile, radioFrame)
 
     b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
@@ -99,7 +98,7 @@ if _initChoice.lower() == 'y':
     but4.grid(row=7, column=5, columnspan=2, ipadx=2, ipady=2)
 
     # Calibrate
-    _poseSuper.calibrate(profile[1][0])
+    #_poseSuper.calibrate(profile[1][0])
 
     # Start UI
     root.mainloop()

@@ -20,7 +20,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import tkinter as tk
 
-
 def man_prime(entry, poseSuper):
     '''
     Allows user to manually set the X-Axis Pose
@@ -30,7 +29,7 @@ def man_prime(entry, poseSuper):
     poseSuper.positionx_axis(temp)
 
 
-def gen_radio_buttons(poseSuper, inProfile, frame, var):
+def gen_buttons(poseSuper, inProfile, frame):
     '''
     Generates radio buttons for each channel in the
     given profile
@@ -38,10 +37,10 @@ def gen_radio_buttons(poseSuper, inProfile, frame, var):
     indexRow = 0
     indexCol = 0
     for key in inProfile.keys():
-        but = tk.Radiobutton(frame, text=inProfile[key][1],
-                             variable=var, value=key, borderwidth=1,
-                             width=8, relief=tk.SOLID,
-                             command=lambda: poseSuper.positionx_axis(inProfile[var.get()][0]))
+        but = tk.Button(frame, text=inProfile[key][1],
+                             borderwidth=1, width=8,
+                             relief=tk.SOLID,
+                             command=lambda key=key: poseSuper.positionx_axis(inProfile[key][0]))
         but.grid(row=indexRow, column=indexCol)
         indexCol +=1
         if key // 8 == indexRow+1:
