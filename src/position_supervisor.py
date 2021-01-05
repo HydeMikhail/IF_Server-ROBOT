@@ -31,7 +31,7 @@ def _linear_to_steps(linearPose, stepsPerRev):
     return int(linearPose / (pulleyDiam / stepsPerRev))  # Integer Number of Steps
 
 
-def _acc_profile(currentStep, pathMag, minTime):
+def _acc_profile(current_step, pathMag, minTime):
     '''
     Calulates discrete time intervals to genearate
     acceleration and deceleration in X-Axis motion.
@@ -41,13 +41,13 @@ def _acc_profile(currentStep, pathMag, minTime):
     disTime = maxTime
 
     # When Stepper is in first revolution
-    if currentStep < 400:
-        disTime = maxTime - (currentStep
+    if current_step < 400:
+        disTime = maxTime - (current_step
                              * ((maxTime - minTime) / 400))
 
     # When Stepper is in last revolution
-    elif currentStep > pathMag - 400:
-        disTime = maxTime - ((pathMag - currentStep)
+    elif current_step > pathMag - 400:
+        disTime = maxTime - ((pathMag - current_step)
                              * ((maxTime - minTime) / 400))
 
     # Between First and Last Rev (MAX SPEED)
@@ -75,7 +75,7 @@ class positionSupervisor(object):
         while True:
             self.x_axis.manual_direction(1)
             if self.origin.is_pressed():
-                self.x_axis.currentStep = 0
+                self.x_axis.current_step = 0
                 time.sleep(0.25)
                 break
 
@@ -101,7 +101,7 @@ class positionSupervisor(object):
             time.sleep((_acc_profile(pathMag - stepMag, pathMag, 0.001))
                        * self.x_axis.time_factor)
 
-        self.x_axis.currentStep = goalSteps
+        self.x_axis.current_step = goalSteps
 
     def take_swtich(self):
         '''
@@ -138,10 +138,10 @@ class positionSupervisor(object):
         Remembers current step and steps per rev before change
         for appropriate adjustment.
         '''
-        tempStep = self.x_axis.currentStep
+        tempStep = self.x_axis.current_step
         tempRotDiv = self.x_axis.steps_per_rev
         self.__init__(stepperPins, update, servoPin, limitPin)
-        self.x_axis.currentStep = tempStep * (self.x_axis.steps_per_rev / tempRotDiv)
+        self.x_axis.current_step = tempStep * (self.x_axis.steps_per_rev / tempRotDiv)
         print('Updated Resolution to %s'%update)
 
 if __name__ == '__main__':

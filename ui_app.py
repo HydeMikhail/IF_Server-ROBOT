@@ -64,38 +64,38 @@ if _initChoice.lower() == 'y':
     # Generate Control Buttons
     gen_buttons(_poseSuper, profile, radioFrame)
 
-    b2 = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
+    takeButton = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=_poseSuper.take_swtich)
-    b2.grid(row=4, column=1, columnspan=2, ipadx=2, ipady=2)
+    takeButton.grid(row=4, column=1, columnspan=2, ipadx=2, ipady=2)
 
-    b3 = tk.Button(cButtonFrame, text='Calibrate', height=2, width=15,
+    calibrateButton = tk.Button(cButtonFrame, text='Calibrate', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=lambda: _poseSuper.calibrate(profile[1][0]))
-    b3.grid(row=2, column=1, columnspan=3, ipadx=2, ipady=2)
-    b4 = tk.Button(cButtonFrame, text='Home', height=2, width=15,
+    calibrateButton.grid(row=2, column=1, columnspan=3, ipadx=2, ipady=2)
+    homeButton = tk.Button(cButtonFrame, text='Home', height=2, width=15,
                    font=helv36, borderwidth=2, relief=tk.SOLID,
                    command=_poseSuper.home)
-    b4.grid(row=4, column=1, columnspan=3, ipadx=2, ipady=2)
+    homeButton.grid(row=4, column=1, columnspan=3, ipadx=2, ipady=2)
 
     # Generate Manual Priming Controls
-    e1 = tk.Entry(eFrame)
-    e1.grid(row=3, column=2, columnspan=2, ipadx=2, ipady=2)
-    but3 = tk.Button(eFrame, text='Manual Position', height=1, width=12,
+    entry = tk.Entry(eFrame)
+    entry.grid(row=3, column=2, columnspan=2, ipadx=2, ipady=2)
+    manButton = tk.Button(eFrame, text='Manual Position', height=1, width=12,
                      borderwidth=2, relief=tk.SOLID,
-                     command=lambda: man_prime(e1, _poseSuper))
-    but3.grid(row=3, column=5, columnspan=2, ipadx=2, ipady=2)
-    l1 = tk.Label(eFrame, text='X-Axis Jog')
-    l1.grid(row=3, column=0, ipadx=2, ipady=2)
+                     command=lambda: man_prime(entry, _poseSuper))
+    manButton.grid(row=3, column=5, columnspan=2, ipadx=2, ipady=2)
+    label1 = tk.Label(eFrame, text='X-Axis Jog')
+    label1.grid(row=3, column=0, ipadx=2, ipady=2)
 
-    m1 = tk.OptionMenu(eFrame, c, *choices)
-    m1.grid(row=7, column=2, columnspan=2, ipadx=2, ipady=2)
-    l2 = tk.Label(eFrame, text='Select Resolution')
-    l2.grid(row=7, column=0, ipadx=2, ipady=2)
-    but4 = tk.Button(eFrame, text='Change Res', height=1, width=12,
+    menu = tk.OptionMenu(eFrame, c, *choices)
+    menu.grid(row=7, column=2, columnspan=2, ipadx=2, ipady=2)
+    label2 = tk.Label(eFrame, text='Select Resolution')
+    label2.grid(row=7, column=0, ipadx=2, ipady=2)
+    resButton = tk.Button(eFrame, text='Change Res', height=1, width=12,
                      borderwidth=2, relief=tk.SOLID,
                      command=lambda: _poseSuper.update_res([5, 6, 13, 19, 26], c.get(), 4, 17))
-    but4.grid(row=7, column=5, columnspan=2, ipadx=2, ipady=2)
+    resButton.grid(row=7, column=5, columnspan=2, ipadx=2, ipady=2)
 
     # Calibrate
     #_poseSuper.calibrate(profile[1][0])
