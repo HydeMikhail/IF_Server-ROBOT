@@ -56,7 +56,7 @@ if _initChoice.lower() == 'y':
     # Defining font
     helv36 = tkFont.Font(family='Helvetica', size=16, weight=tkFont.BOLD)
 
-    # Tkinter Variables
+    # Tkinter Variables for Step Resolution
     c = tk.StringVar(root)
     choices = ['QURT', 'EGTH', 'SXTH']
     c.set('EGTH')

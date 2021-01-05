@@ -102,7 +102,7 @@ class positionSupervisor(object):
                        * self.x_axis.time_factor)
 
         self.x_axis.currentStep = goalSteps
-        
+
     def take_swtich(self):
         '''
         Action for taking the button at the current pose.

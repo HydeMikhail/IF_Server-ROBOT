@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import tkinter as tk
 
+
 def man_prime(entry, poseSuper):
     '''
     Allows user to manually set the X-Axis Pose
@@ -38,8 +39,8 @@ def gen_buttons(poseSuper, inProfile, frame):
     indexCol = 0
     for key in inProfile.keys():
         but = tk.Button(frame, text=inProfile[key][1],
-                             borderwidth=1, width=8,
-                             relief=tk.SOLID,
+                             borderwidth=1,
+                             width=8, relief=tk.SOLID,
                              command=lambda key=key: poseSuper.positionx_axis(inProfile[key][0]))
         but.grid(row=indexRow, column=indexCol)
         indexCol +=1
