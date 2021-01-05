@@ -31,7 +31,7 @@ def _linear_to_steps(linearPose, stepsPerRev):
     return int(linearPose / (pulleyDiam / stepsPerRev))  # Integer Number of Steps
 
 
-def _acc_profile(current_step, pathMag, minTime):
+def _acc_profile(currentStep, pathMag, minTime):
     '''
     Calulates discrete time intervals to genearate
     acceleration and deceleration in X-Axis motion.
@@ -41,13 +41,13 @@ def _acc_profile(current_step, pathMag, minTime):
     disTime = maxTime
 
     # When Stepper is in first revolution
-    if current_step < 400:
-        disTime = maxTime - (current_step
+    if currentStep < 400:
+        disTime = maxTime - (currentStep
                              * ((maxTime - minTime) / 400))
 
     # When Stepper is in last revolution
-    elif current_step > pathMag - 400:
-        disTime = maxTime - ((pathMag - current_step)
+    elif currentStep > pathMag - 400:
+        disTime = maxTime - ((pathMag - currentStep)
                              * ((maxTime - minTime) / 400))
 
     # Between First and Last Rev (MAX SPEED)

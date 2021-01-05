@@ -65,25 +65,25 @@ if _initChoice.lower() == 'y':
     gen_buttons(_poseSuper, profile, radioFrame)
 
     takeButton = tk.Button(ptButtonFrame, text='Take', height=2, width=15,
-                   font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=_poseSuper.take_swtich)
+                           font=helv36, borderwidth=2, relief=tk.SOLID,
+                           command=_poseSuper.take_swtich)
     takeButton.grid(row=4, column=1, columnspan=2, ipadx=2, ipady=2)
 
     calibrateButton = tk.Button(cButtonFrame, text='Calibrate', height=2, width=15,
-                   font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=lambda: _poseSuper.calibrate(profile[1][0]))
+                                font=helv36, borderwidth=2, relief=tk.SOLID,
+                                command=lambda: _poseSuper.calibrate(profile[1][0]))
     calibrateButton.grid(row=2, column=1, columnspan=3, ipadx=2, ipady=2)
     homeButton = tk.Button(cButtonFrame, text='Home', height=2, width=15,
-                   font=helv36, borderwidth=2, relief=tk.SOLID,
-                   command=_poseSuper.home)
+                           font=helv36, borderwidth=2, relief=tk.SOLID,
+                           command=_poseSuper.home)
     homeButton.grid(row=4, column=1, columnspan=3, ipadx=2, ipady=2)
 
     # Generate Manual Priming Controls
     entry = tk.Entry(eFrame)
     entry.grid(row=3, column=2, columnspan=2, ipadx=2, ipady=2)
     manButton = tk.Button(eFrame, text='Manual Position', height=1, width=12,
-                     borderwidth=2, relief=tk.SOLID,
-                     command=lambda: man_prime(entry, _poseSuper))
+                          borderwidth=2, relief=tk.SOLID,
+                          command=lambda: man_prime(entry, _poseSuper))
     manButton.grid(row=3, column=5, columnspan=2, ipadx=2, ipady=2)
     label1 = tk.Label(eFrame, text='X-Axis Jog')
     label1.grid(row=3, column=0, ipadx=2, ipady=2)
@@ -93,12 +93,12 @@ if _initChoice.lower() == 'y':
     label2 = tk.Label(eFrame, text='Select Resolution')
     label2.grid(row=7, column=0, ipadx=2, ipady=2)
     resButton = tk.Button(eFrame, text='Change Res', height=1, width=12,
-                     borderwidth=2, relief=tk.SOLID,
-                     command=lambda: _poseSuper.update_res([5, 6, 13, 19, 26], c.get(), 4, 17))
+                          borderwidth=2, relief=tk.SOLID,
+                          command=lambda: _poseSuper.update_res([5, 6, 13, 19, 26], c.get(), 4, 17))
     resButton.grid(row=7, column=5, columnspan=2, ipadx=2, ipady=2)
 
     # Calibrate
-    #_poseSuper.calibrate(profile[1][0])
+    _poseSuper.calibrate(profile[1][0])
 
     # Start UI
     root.mainloop()
